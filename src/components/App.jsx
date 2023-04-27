@@ -1,5 +1,5 @@
 //external imports
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 //internal imports
@@ -24,8 +24,15 @@ export const App = () => {
   const [loadMore, setLoadMore] = useState(false);
 
 
-// helper functions  
-  const handlerSubmit = (query) => {
+  /*helper functions*/
+  
+// scroll to bottom with load more
+  const bottomRef = useRef(null);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [images]);
+  
+  const handleSubmit = (query) => {
     setLoading(true);
     setImages([]);
     setQuery(query)
@@ -33,29 +40,31 @@ export const App = () => {
     console.log("submitted");
   };
   
-  const handlerOpenModal = (url) => {
+  const handleOpenModal = (url) => {
     setOpenModal(true);
     setLargeImageURL(url);
     console.log("modal open");
   };
 
-  const handlerLoadMore = () => {
+  const handleLoadMore = () => {
     setPage(prev => prev + 1);
     setLoading(true);
     setLoadMore(true);
     console.log("load more")
   };
 
-  const handlerModalClose = () => {
+  const handleModalClose = () => {
     setOpenModal(false);
     setLargeImageURL('');
     console.log("modal close")
   };
 
   useEffect(() => {
+   
     if (!query) return;
+    
+    const getGallery = async query => {
 
-      const getGallery = async query => {
         try {
           const response = await getImages(query, page);
           setImages(prev => [...prev, ...response]);
@@ -85,23 +94,24 @@ export const App = () => {
 
   return (
     <div>
-      <Searchbar onSubmit={handlerSubmit} />
+      <Searchbar onSubmit={handleSubmit} />
       <ImageGallery
         images={images}
-        openModal={handlerOpenModal}
-        loadMore={handlerLoadMore}
+        openModal={handleOpenModal}
+        loadMore={handleLoadMore}
       />
       {''}
       {loading && <Loader />}
       {loadMore &&
-        <Button loadMore={handlerLoadMore} />}
+        <Button loadMore={handleLoadMore} />}
       {openModal && (
         <Modal
           largeImageURL={largeImageURL}
-          modalClose={handlerModalClose}
+          modalClose={handleModalClose}
         />
         )
       }
+      <div ref={bottomRef}></div>
     </div>
   );
 };

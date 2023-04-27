@@ -8,14 +8,15 @@ const Button = props => {
     } = props;
     
     return (
-    
-        <button
-            className="Button"
-            type={type}
-            onClick={loadMore}
-            aria-label="load more images"
-        >Load More
-        </button>
+        <div className="Center">
+            <button
+                className="Button"
+                type={type}
+                onClick={loadMore}
+                aria-label="load more images"
+            >Load More
+            </button>
+        </div>
     )
 };
 

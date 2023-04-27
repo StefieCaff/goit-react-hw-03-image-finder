@@ -6,14 +6,14 @@ const Searchbar = ({ onSubmit}) => {
     
     const [query, setQuery] = useState('');
     
-    const handlerChange = e => {
+    const handleChange = e => {
         const userInput = e.currentTarget.value.toLowerCase().trim()
         setQuery(userInput);
 
         console.log(query);
     };
 
-    const handlerSubmit = e => {
+    const handleSubmit = e => {
         e.preventDefault();
 
         if (query === "") {
@@ -23,11 +23,12 @@ const Searchbar = ({ onSubmit}) => {
         
         onSubmit(query);
         setQuery('');
+        e.target.reset();
     }
     
     return (
         <header className="Searchbar">
-            <form className="SearchForm" onSubmit={handlerSubmit}>
+            <form className="SearchForm" onSubmit={handleSubmit}>
                 <button type="submit" className="SearchForm-button">
                     <span className="SearchForm-button-label">Search</span>
                 </button>
@@ -39,7 +40,7 @@ const Searchbar = ({ onSubmit}) => {
                         autoComplete="off"
                         autoFocus
                         placeholder="Search images and photos"
-                        onChange = {handlerChange}
+                        onChange = {handleChange}
                     />
             </form>
         </header>

@@ -20,7 +20,7 @@ const ImageGallery = (props) => {
                     openModal={openModal}
                     tags={tags}
                 />
-            ))};
+            ))}
         </ul>
     );
 };
