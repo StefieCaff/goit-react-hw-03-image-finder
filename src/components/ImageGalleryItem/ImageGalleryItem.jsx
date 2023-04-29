@@ -12,7 +12,7 @@ const ImageGalleryItem = (props) => {
 
     return (
         <li>
-        <img className="ImageGalleryItem-image"
+            <img className="ImageGalleryItem-image"
                 src={webformatURL}
                 alt={tags}
                 largeImage={ largeImageURL }

@@ -27,36 +27,32 @@ export const App = () => {
   /*helper functions*/
   
 // scroll to bottom with load more
-  const bottomRef = useRef(null);
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [images]);
+  // const bottomRef = useRef(null);
+  // useEffect(() => {
+  //   bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [images]);
   
   const handleSubmit = (query) => {
     setLoading(true);
     setImages([]);
     setQuery(query)
     setPage(1);
-    console.log("submitted");
   };
   
   const handleOpenModal = (url) => {
     setOpenModal(true);
     setLargeImageURL(url);
-    console.log("modal open");
   };
 
   const handleLoadMore = () => {
     setPage(prev => prev + 1);
     setLoading(true);
     setLoadMore(true);
-    console.log("load more")
   };
 
   const handleModalClose = () => {
     setOpenModal(false);
     setLargeImageURL('');
-    console.log("modal close")
   };
 
   useEffect(() => {
@@ -111,7 +107,7 @@ export const App = () => {
         />
         )
       }
-      <div ref={bottomRef}></div>
+      {/* <div ref={bottomRef}></div> */}
     </div>
   );
 };
