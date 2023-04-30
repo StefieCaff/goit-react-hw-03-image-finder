@@ -1,5 +1,5 @@
 import { array, func } from 'prop-types';
-
+import { useState, useEffect, useRef } from 'react';
 
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 
@@ -7,21 +7,31 @@ const ImageGallery = (props) => {
 
     const {
         images,
-        openModal
+        openModal,
+        index
     } = props;
-
+    
+ const imgRef = useRef(null);
+  useEffect(() => {
+    imgRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [images]);
+    
     return (
+        
+        
         <ul className="ImageGallery">
             {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+                <><span ref={imgRef}></span>
                 <ImageGalleryItem
                     key={id}
                     webformatURL={webformatURL}
                     largeImageURL={largeImageURL}
                     openModal={openModal}
                     tags={tags}
-                />
+                    /> </>
             ))}
         </ul>
+   
     );
 };
 

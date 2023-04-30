@@ -26,7 +26,7 @@ export const App = () => {
 
   /*helper functions*/
   
-// scroll to bottom with load more
+//scroll to bottom with load more
   // const bottomRef = useRef(null);
   // useEffect(() => {
   //   bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -81,13 +81,15 @@ export const App = () => {
             return;
           }
           
-          if (page >= 2 && page <= 40) {
+          if (page >= 2 && page <= 41) {
             setLoadMore(true);
             return;
           }
 
-          if (page === 41) {
-            // setImages([imageData.hits.slice(20)]);
+          if (page === 42) {
+            // const lastImages = imageData.hits.slice(4);
+            // console.log(lastImages);
+            
             setLoadMore(false);
             return;
           }
