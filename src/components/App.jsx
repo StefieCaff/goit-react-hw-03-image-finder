@@ -63,21 +63,42 @@ export const App = () => {
 
         try {
           const response = await getImages(query, page);
-          setImages(prev => [...prev, ...response]);
-          if (response.length < 1) {
+          let imageData = response.data;
+
+          setImages(prev => [...prev, ...imageData.hits]);
+          console.log(imageData.totalHits);
+
+          if (imageData.hits.length === 0) {
             setImages([]);
             setLoadMore(false);
-            Notify.failure('Sorry, there are no matching results found, please try another search.')
+            Notify.failure('Sorry, there are no matching images found, please try another search.')
+            return;
           }
-          if (response.length > 0 && response.length < 12) {
+          if (imageData.hits.length < 12) {
             setLoading(false);
             setLoadMore(false);
-            Notify.info(`Nice! there are ${response.length} images!`)
+            Notify.success(`Woot! Maximum search values found! We have ${imageData.hits.length} images.`);
+            return;
           }
-          if (response.length === 12) {
+          
+          if (page >= 2 && page <= 40) {
+            setLoadMore(true);
+            return;
+          }
+
+          if (page === 41) {
+            // setImages([imageData.hits.slice(20)]);
+            setLoadMore(false);
+            return;
+          }
+
+          if (imageData.totalHits > 12) {
             setLoading(true);
             setLoadMore(true);
+            Notify.success(`Hooray! We found ${imageData.totalHits} images.`);
+            return;
           }
+
         }
         finally {
           setLoading(false);
