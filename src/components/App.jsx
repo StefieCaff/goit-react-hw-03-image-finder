@@ -1,5 +1,5 @@
 //external imports
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 //internal imports
@@ -22,7 +22,7 @@ export const App = () => {
   const [openModal, setOpenModal] = useState(false);
   const [largeImageURL, setLargeImageURL] = useState('');
   const [loadMore, setLoadMore] = useState(false);
-
+  const [toTop, setToTop] = useState(false);
 
   /*helper functions*/
   
@@ -48,7 +48,16 @@ export const App = () => {
     setPage(prev => prev + 1);
     setLoading(true);
     setLoadMore(true);
+    setToTop(true);
   };
+
+  const backToTop = () => {
+    window.scrollTo({
+            left: 0,
+            top: 0,
+            behavior: "smooth",
+          })
+  }
 
   const handleModalClose = () => {
     setOpenModal(false);
@@ -71,25 +80,28 @@ export const App = () => {
           if (imageData.hits.length === 0) {
             setImages([]);
             setLoadMore(false);
+            setToTop(false);
             Notify.failure('Sorry, there are no matching images found, please try another search.')
             return;
           }
           if (imageData.hits.length < 12) {
             setLoading(false);
             setLoadMore(false);
+            setToTop(false);
             Notify.success(`Woot! Maximum search values found! We have ${imageData.hits.length} images.`);
             return;
           }
           
           if (page >= 2 && page <= 41) {
             setLoadMore(true);
+            setToTop(true);
             return;
           }
 
           if (page === 42) {
             // const lastImages = imageData.hits.slice(4);
             // console.log(lastImages);
-            
+            setToTop(false);
             setLoadMore(false);
             return;
           }
@@ -97,6 +109,7 @@ export const App = () => {
           if (imageData.totalHits > 12) {
             setLoading(true);
             setLoadMore(true);
+            setToTop(true);
             Notify.success(`Hooray! We found ${imageData.totalHits} images.`);
             return;
           }
@@ -121,8 +134,12 @@ export const App = () => {
       />
       {''}
       {loading && <Loader />}
-      {loadMore &&
-        <Button loadMore={handleLoadMore} />}
+      <div className="Center-buttons">
+        {loadMore &&
+          <Button loadMore={handleLoadMore} text="Load More" />}
+        {toTop &&
+          <Button loadMore={backToTop} text="To Top" />}
+      </div>
       {openModal && (
         <Modal
           largeImageURL={largeImageURL}
