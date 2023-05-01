@@ -136,9 +136,9 @@ export const App = () => {
       {loading && <Loader />}
       <div className="Center-buttons">
         {loadMore &&
-          <Button loadMore={handleLoadMore} text="Load More" />}
+          <Button clickHandler={handleLoadMore} text="Load More" />}
         {toTop &&
-          <Button loadMore={backToTop} text="To Top" />}
+          <Button clickHandler={backToTop} text="To Top" />}
       </div>
       {openModal && (
         <Modal

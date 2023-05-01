@@ -5,7 +5,7 @@ const Button = props => {
     const {
         text,
         type,
-        loadMore,
+        clickHandler,
     } = props;
     
     return (
@@ -13,7 +13,7 @@ const Button = props => {
             <button
                 className="Button"
                 type={type}
-                onClick={loadMore}
+                onClick={clickHandler}
                 aria-label={text}
             >{text}
             </button>

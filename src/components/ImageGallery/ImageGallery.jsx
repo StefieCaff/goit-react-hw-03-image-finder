@@ -19,6 +19,7 @@ const ImageGallery = (props) => {
         
         
         <ul className="ImageGallery">
+            
             {images.map(({ id, webformatURL, largeImageURL, tags }) => (
                
                 <ImageGalleryItem
@@ -34,9 +35,10 @@ const ImageGallery = (props) => {
     );
 };
 
+
 ImageGallery.propTypes = {
     images: array.isRequired,
-    openModal: func.isRequired
+    openModal: func.isRequired,
 };
 
 export { ImageGallery };
