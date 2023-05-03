@@ -1,5 +1,5 @@
 //external imports
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 //internal imports
@@ -27,10 +27,10 @@ export const App = () => {
   /*helper functions*/
   
 //scroll to bottom with load more
-  // const bottomRef = useRef(null);
-  // useEffect(() => {
-  //   bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  // }, [images]);
+  const bottomRef = useRef(null);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [images]);
   
   const handleSubmit = (query) => {
     setLoading(true);
@@ -73,10 +73,13 @@ export const App = () => {
         try {
           const response = await getImages(query, page);
           let imageData = response.data;
-
-          setImages(prev => [...prev, ...imageData.hits]);
-          console.log(imageData.totalHits);
-
+            if( page === 42 ) {
+              setImages(prev => [...prev, ...imageData.hits.slice(4)]);
+            }
+            else{
+              setImages(prev => [...prev, ...imageData.hits]);
+            }
+         
           if (imageData.hits.length === 0) {
             setImages([]);
             setLoadMore(false);
@@ -87,7 +90,7 @@ export const App = () => {
           if (imageData.hits.length < 12) {
             setLoading(false);
             setLoadMore(false);
-            setToTop(false);
+            setToTop(true);
             Notify.success(`Woot! Maximum search values found! We have ${imageData.hits.length} images.`);
             return;
           }
@@ -99,9 +102,7 @@ export const App = () => {
           }
 
           if (page === 42) {
-            // const lastImages = imageData.hits.slice(4);
-            // console.log(lastImages);
-            setToTop(false);
+            setToTop(true);
             setLoadMore(false);
             return;
           }
@@ -127,11 +128,13 @@ export const App = () => {
   return (
     <div>
       <Searchbar onSubmit={handleSubmit} />
+      
       <ImageGallery
         images={images}
         openModal={handleOpenModal}
         loadMore={handleLoadMore}
       />
+      <div ref={bottomRef}></div>
       {''}
       {loading && <Loader />}
       <div className="Center-buttons">
@@ -147,7 +150,7 @@ export const App = () => {
         />
         )
       }
-      {/* <div ref={bottomRef}></div> */}
+      
     </div>
   );
 };
