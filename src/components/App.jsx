@@ -73,6 +73,9 @@ export const App = () => {
         try {
           const response = await getImages(query, page);
           let imageData = response.data;
+          let imageCount = imageData.hits.length;
+          let imageTotal = imageData.totalHits;
+          
             if( page === 42 ) {
               setImages(prev => [...prev, ...imageData.hits.slice(4)]);
             }
@@ -80,18 +83,27 @@ export const App = () => {
               setImages(prev => [...prev, ...imageData.hits]);
             }
          
-          if (imageData.hits.length === 0) {
+          if (imageCount === 0) {
             setImages([]);
             setLoadMore(false);
             setToTop(false);
             Notify.failure('Sorry, there are no matching images found, please try another search.')
             return;
           }
-          if (imageData.hits.length < 12) {
+
+          if (imageCount < 12 && page === 1) {
+            setLoading(false);
+            setLoadMore(false);
+            setToTop(false);
+            Notify.success(`Woot! Maximum search value found, there are ${imageCount} images.`);
+            return;
+          }
+
+          if (imageCount < 12) {
             setLoading(false);
             setLoadMore(false);
             setToTop(true);
-            Notify.success(`Woot! Maximum search values found! We have ${imageData.hits.length} images.`);
+            Notify.success(`Woot! Maximum search values found! We have ${imageCount} images.`);
             return;
           }
           
@@ -107,11 +119,11 @@ export const App = () => {
             return;
           }
 
-          if (imageData.totalHits > 12) {
+          if (imageTotal > 12) {
             setLoading(true);
             setLoadMore(true);
             setToTop(true);
-            Notify.success(`Hooray! We found ${imageData.totalHits} images.`);
+            Notify.success(`Hooray! We found ${imageTotal} images.`);
             return;
           }
 
