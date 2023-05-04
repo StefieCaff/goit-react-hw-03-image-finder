@@ -81,15 +81,12 @@ export const App = () => {
             }
             else  if (Number.isInteger(imageTotal / imageCount) === true && page === (imageTotal / imageCount)){
               setImages(prev => [...prev, ...imageData.hits]);
-              console.log('test')
-              console.log(page);
               setLoadMore(false);
               return;
             }
             
             else {
               setImages(prev => [...prev, ...imageData.hits]);
-              console.log("test 2");
             }
          
           if (imageCount === 0) {
@@ -99,10 +96,6 @@ export const App = () => {
             Notify.failure('Sorry, there are no matching images found, please try another search.')
             return;
           }
-
-          // if (Number.isInteger(imageTotal / imageCount) === true && page === (imageTotal / imageCount) - 1) {
-          //   setLoadMore(false);
-          // }
 
           if (imageCount < 12 && page === 1) {
             setLoading(false);
